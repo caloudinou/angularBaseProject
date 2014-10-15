@@ -1,0 +1,43 @@
+{
+  "name": "template",
+  "version": "0.0.0",
+  "authors": [
+    "sthorng <sthorng@kadrige.com>"
+  ],
+  "description": "html5 framework, angular lib, jquery, css icons",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "angular",
+    "jquery",
+    "responsive",
+    "webapp",
+    "css3",
+    "html5",
+    "foundation"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "dev/vendors",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-animate": "~1.2.24",
+    "angular-cookies": "~1.2.24",
+    "angular-loader": "~1.2.24",
+    "angular-mocks": "~1.2.24",
+    "angular-resource": "~1.2.24",
+    "angular-route": "~1.2.24",
+    "angular-sanitize": "~1.2.24",
+    "angular-scenario": "~1.2.24",
+    "angular-touch": "~1.2.24",
+    "fontawesome": "~4.2.0",
+    "foundation": "zurb/bower-foundation#~5.4.3",
+    "jquery-ui": "~1.11.1"
+  }
+}
