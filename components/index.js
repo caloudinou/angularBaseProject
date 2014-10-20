@@ -12,7 +12,7 @@ util.inherits(mySubGenerator, yeoman.generators.NamedBase);
 mySubGenerator.prototype.generateModule = function generateModule() {
  		this.mkdir("dev/components/" + this.name);
 
-  		var contentController	= "'use strict'; \n \n myApp.controller('" + this.name + "Ctrl', ['$scope', function($scope) { \n \n }]);",
+ 		var contentController	= "'use strict'; \n \n myApp.controller('" + this.name + "Ctrl', ['$scope', function($scope) { \n \n }]);",
  			contentDirective 	= "'use strict'; \n \n myApp.directive('"+ this.name + "Directive', function() { \n \n });",
  			contentFilter		= "'use strict'; \n \n myApp.filter('" + this.name + "Filter', function () { \n \n });",
  			contentService		= "'use strict'; \n \n myApp.factory('" + this.name + "Service', function() { \n \n });",
