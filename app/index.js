@@ -124,8 +124,8 @@ myGenerator.prototype.build = function build() {
     this.mkdir("dev/styles/compiled");
     this.mkdir("dev/vendors");
     this.mkdir("prod");
-
-
+    
+    var contentPackjson = '{\n\n "name": "myGenerator",\n\n"version": "0.1.0",\n\n"description": "test",\n\n"license": "MIT",\n\n"repository": "test",\n\n"author": "THORNG Sovanaryth",\n\n"main": "app/index.js",\n\n"engines": {\n\n"node": ">=0.10.0",\n\n"npm": ">=1.3"\n\n}' ;
 
     if(this.baseProject == "Angular app") {
         this.mkdir("dev/components");
@@ -147,7 +147,36 @@ myGenerator.prototype.build = function build() {
         this.src.copy("_routes.js", "dev/routes.js");
         this.src.copy("_bower.json", "bower.json");
         this.src.copy("_bowerrc", ".bowerrc");
-        this.src.copy("_package.json", "package.json");
+        //this.src.copy("_package.json", "package.json");
         this.src.copy("_gulpfile.js", "gulpfile.js");
     }
+
+    switch (this.preprocessor) { 
+        case 'less':
+            if(this.taskrunner == 'gulp'){
+                contentPackjson += ',"devDependencies": {"css-sprite": "^0.9.0-beta2", "gulp-recess": "^1.1.1", "gulp-less": "^1.3.6"}' ;
+            }else{
+                contentPackjson += ',"devDependencies": {"grunt-lesslint": "^1.1.13", "grunt-recess": "1.0.0", "assemble": "^0.4.42", "assemble-less": "^0.7.0", "grunt-less-imports": "^1.0.0", "grunt-less": "^0.1.7", "grunt-contrib-less": "^0.11.4" }' ;
+            };
+        break;
+        
+        case 'sass':
+            if(this.taskrunner == 'gulp'){
+                contentPackjson += ',"devDependencies": {"gulp-inc": "^0.1.1", "gulp-frontnote": "^0.1.0", "css-sprite": "^0.9.0-beta2", "gulp-ruby-sass": "^0.7.1", "gulp-sass": "^1.2.0", "gulp-sass-graph": "^1.0.0", "gulp-sassdoc": "^1.0.3", "gulp-scss-lint": "^0.1.4"}' ;
+            }else{
+                contentPackjson += ',"devDependencies": {"grunt-contrib-sass": "^0.8.1", "grunt-contrib-compass": "^1.0.1", "grunt-sass": "^0.16.0", "runt-sass-convert": "^0.2.0", "grunt-sass-directory-import": "^0.1.1"}' ;
+            };
+        break;
+        };
+    switch (this.taskrunner) { 
+        case 'gulp':
+        contentPackjson += ',"devDependencies": {"gulp-cache": "^0.2.4","gulp-cssmin": "^0.1.6","gulp-gzip": "0.0.8","gulp-imagemin": "^1.0.1","gulp-jshint": "^1.8.5","gulp-livereload": "^2.1.1","gulp-notify": "^2.0.0","gulp-rename": "^1.2.0","gulp-ruby-sass": "^0.7.1","gulp-uglify": "^1.0.1","gulp-webp": "^2.0.0" }' ;
+        break;
+        case 'grunt':
+        contentPackjson += ',"devDependencies": {\n\n"grunt": "^0.4.5",\n\n"grunt-contrib-compress": "^0.12.0",\n\n"grunt-contrib-concat": "^0.5.0",\n\n"grunt-contrib-connect": "^0.8.0",\n\n"grunt-contrib-copy": "^0.7.0",\n\n"grunt-contrib-cssmin": "^0.10.0",\n\n"grunt-contrib-imagemin": "^0.8.1",\n\n"grunt-contrib-jshint": "^0.10.0",\n\n"grunt-contrib-uglify": "^0.6.0",\n\n"grunt-contrib-watch": "^0.6.1" }' ;
+        break;
+        };
+    contentPackjson += '}';
+    //var json= JSON.stringify( contentPackjson );
+    this.dest.write("package.json", contentPackjson);
 };
