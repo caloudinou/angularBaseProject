@@ -132,7 +132,7 @@ myGenerator.prototype.build = function build() {
         
     //create content to package.json
     var contentPackjson = '{'
-                        +br+' "name": "myGenerator",'
+                        +br+'"name": "myGenerator",'
                         +br+'"version": "0.1.0",'
                         +br+'"description": "test",'
                         +br+'"license": "MIT",'
@@ -144,7 +144,7 @@ myGenerator.prototype.build = function build() {
                         +br+'"npm": ">=1.3"'
                         +br+'}' ;
         
-    //create content to package.json
+    //create content to bower.json
     var contentBowerjson = '{'
                         +br+'"name": "ProjectFront",'
                         +br+'"version": "0.0.1",'
@@ -161,7 +161,7 @@ myGenerator.prototype.build = function build() {
     switch (this.bootstrap)
     {
         case 'bootstrap':
-        contentBowerjson +=' boostrap,';
+        contentBowerjson +=' bootstrap,';
 
         break;
         case 'foundation':
@@ -187,7 +187,7 @@ myGenerator.prototype.build = function build() {
     switch (this.bootstrap)
     {
         case 'bootstrap':
-        contentBowerjson += br+'"boostrap",';
+        contentBowerjson += br+'"bootstrap",';
 
         break;
         case 'foundation':
@@ -208,20 +208,21 @@ myGenerator.prototype.build = function build() {
 
     //keywords compared to choice   
     if(this.baseProject == "Angular app"){
-            contentBowerjson += br+'"angular-animate": "~1.2.24",'
-                                +br+'"angular-cookies": "~1.2.24",'
-                                +br+'"angular-loader": "~1.2.24",'
-                                +br+'"angular-mocks": "~1.2.24",'
-                                +br+'"angular-resource": "~1.2.24",'
-                                +br+'"angular-route": "~1.2.24",'
-                                +br+'"angular-sanitize": "~1.2.24",'
-                                +br+'"angular-scenario": "~1.2.24",'
-                                +br+'"angular-touch": "~1.2.24",';
+            contentBowerjson += br+'"angular": "~1.3.0",'
+                                +br+'"angular-animate": "~1.3.0",'
+                                +br+'"angular-cookies": "~1.3.0",'
+                                +br+'"angular-loader": "~1.3.0",'
+                                +br+'"angular-mocks": "~1.3.0",'
+                                +br+'"angular-resource": "~1.3.0",'
+                                +br+'"angular-route": "~1.3.0",'
+                                +br+'"angular-sanitize": "~1.3.0",'
+                                +br+'"angular-scenario": "~1.3.0",'
+                                +br+'"angular-touch": "~1.3.0",';
     }
     switch (this.bootstrap)
     {
         case 'bootstrap':
-            contentBowerjson += ''; //br+'"boostrap",';
+            contentBowerjson += br+'"bootstrap": "~3.3.0",'; 
         break;
         case 'foundation':
             contentBowerjson += br+'"foundation": "zurb/bower-foundation#~5.4.3",';
@@ -231,7 +232,9 @@ myGenerator.prototype.build = function build() {
 
 
     contentBowerjson += br+'"fontawesome": "~4.2.0",'
-                    +br+'"jquery-ui": "~1.11.1"'
+                    +br+'"jquery": "~2.0.3",' 
+                    +br+'"jquery-ui": "~1.11.1",'
+                    +br+'"underscore": "~1.5.2"'
                     +br+'}'
                     +br+'}';  
     
