@@ -114,6 +114,7 @@ myGenerator.prototype.askFor = function askFor() {
 };
 
 // build the project folder structure depending on the user choice
+//choice site static
 myGenerator.prototype.build = function build() {
     this.mkdir("dev");
     this.mkdir("dev/assets");
@@ -124,9 +125,117 @@ myGenerator.prototype.build = function build() {
     this.mkdir("dev/styles/compiled");
     this.mkdir("dev/vendors");
     this.mkdir("prod");
+        
+    //definition to the end line & the space
+    var br = '\n';
+    var space = '    ';
+        
+    //create content to package.json
+    var contentPackjson = '{'
+                        +br+' "name": "myGenerator",'
+                        +br+'"version": "0.1.0",'
+                        +br+'"description": "test",'
+                        +br+'"license": "MIT",'
+                        +br+'"repository": "test",'
+                        +br+'"author": "THORNG Sovanaryth",'
+                        +br+'"main": "app/index.js",'
+                        +br+'"engines": {'
+                        +br+'"node": ">=0.10.0",'
+                        +br+'"npm": ">=1.3"'
+                        +br+'}' ;
+        
+    //create content to package.json
+    var contentBowerjson = '{'
+                        +br+'"name": "ProjectFront",'
+                        +br+'"version": "0.0.1",'
+                        +br+'  "authors": ['
+                        +br+'"sthorng <sthorng@kadrige.com>"'
+                        +br+'],'
+                        +br+'"description": "html5 framework,';
     
-    var contentPackjson = '{\n\n "name": "myGenerator",\n\n"version": "0.1.0",\n\n"description": "test",\n\n"license": "MIT",\n\n"repository": "test",\n\n"author": "THORNG Sovanaryth",\n\n"main": "app/index.js",\n\n"engines": {\n\n"node": ">=0.10.0",\n\n"npm": ">=1.3"\n\n}' ;
+        
+    // description compared to choice   
+    if(this.baseProject == "Angular app"){
+        contentBowerjson += ' angular lib,';
+    }
+    switch (this.bootstrap)
+    {
+        case 'bootstrap':
+        contentBowerjson +=' boostrap,';
 
+        break;
+        case 'foundation':
+        contentBowerjson += 'fondation,';
+    }
+
+
+    contentBowerjson += ' jquery, css icons",'
+                     +br+ '"moduleType": ['
+                     +br+  '"globals"'
+                     +br+ '],'
+                     +br+ '"keywords": ['
+                     +br+ '"jquery",'
+                     +br+ '"responsive",'
+                     +br+ '"css3",'
+                     +br+ '"html5",';
+
+    //keywords compared to choice   
+    if(this.baseProject == "Angular app"){
+            contentBowerjson += br+'"angular",'
+                                +br+'"webapp",';
+    }
+    switch (this.bootstrap)
+    {
+        case 'bootstrap':
+        contentBowerjson += br+'"boostrap",';
+
+        break;
+        case 'foundation':
+        contentBowerjson += br+'"foundation"';
+    }
+
+    contentBowerjson += br+'],'
+                        +br+'"license": "MIT",'
+                        +br+'"ignore": ['
+                        +br+'"**/.*",'
+                        +br+'"node_modules",'
+                        +br+'"bower_components",'
+                        +br+'"dev/vendors",'
+                        +br+'"test",'
+                        +br+'"tests"'
+                        +br+'],'
+                        +br+'"dependencies": {';
+
+    //keywords compared to choice   
+    if(this.baseProject == "Angular app"){
+            contentBowerjson += br+'"angular-animate": "~1.2.24",'
+                                +br+'"angular-cookies": "~1.2.24",'
+                                +br+'"angular-loader": "~1.2.24",'
+                                +br+'"angular-mocks": "~1.2.24",'
+                                +br+'"angular-resource": "~1.2.24",'
+                                +br+'"angular-route": "~1.2.24",'
+                                +br+'"angular-sanitize": "~1.2.24",'
+                                +br+'"angular-scenario": "~1.2.24",'
+                                +br+'"angular-touch": "~1.2.24",';
+    }
+    switch (this.bootstrap)
+    {
+        case 'bootstrap':
+            contentBowerjson += ''; //br+'"boostrap",';
+        break;
+        case 'foundation':
+            contentBowerjson += br+'"foundation": "zurb/bower-foundation#~5.4.3",';
+    }
+
+
+
+
+    contentBowerjson += br+'"fontawesome": "~4.2.0",'
+                    +br+'"jquery-ui": "~1.11.1"'
+                    +br+'}'
+                    +br+'}';  
+    
+//choice site angular
     if(this.baseProject == "Angular app") {
         this.mkdir("dev/components");
 
@@ -142,41 +251,156 @@ myGenerator.prototype.build = function build() {
         this.mkdir("tests");
         this.mkdir("tests/e2e");
 
-        this.src.copy("_index.html", "dev/index.html");
+        //this.src.copy("_index.html", "dev/index.html");
         this.src.copy("_modules.js", "dev/modules.js");
         this.src.copy("_routes.js", "dev/routes.js");
-        this.src.copy("_bower.json", "bower.json");
+        //this.src.copy("_bower.json", "bower.json");
         this.src.copy("_bowerrc", ".bowerrc");
         //this.src.copy("_package.json", "package.json");
         this.src.copy("_gulpfile.js", "gulpfile.js");
     }
-
+    //incrementing the content according to the choice dependencies
     switch (this.preprocessor) { 
         case 'less':
             if(this.taskrunner == 'gulp'){
-                contentPackjson += ',"devDependencies": {"css-sprite": "^0.9.0-beta2", "gulp-recess": "^1.1.1", "gulp-less": "^1.3.6"}' ;
+                contentPackjson += ',"devDependencies": {'
+                                +br+'"css-sprite": "^0.9.0-beta2", '
+                                +br+'"gulp-recess": "^1.1.1", '
+                                +br+'"gulp-less": "^1.3.6"}' ;
             }else{
-                contentPackjson += ',"devDependencies": {"grunt-lesslint": "^1.1.13", "grunt-recess": "1.0.0", "assemble": "^0.4.42", "assemble-less": "^0.7.0", "grunt-less-imports": "^1.0.0", "grunt-less": "^0.1.7", "grunt-contrib-less": "^0.11.4" }' ;
+                contentPackjson += ',"devDependencies": {'
+                                +br+'"grunt-lesslint": "^1.1.13", '
+                                +br+'"grunt-recess": "1.0.0", '
+                                +br+'"assemble": "^0.4.42", '
+                                +br+'"assemble-less": "^0.7.0", '
+                                +br+'"grunt-less-imports": "^1.0.0", '
+                                +br+'"grunt-less": "^0.1.7", '
+                                +br+'"grunt-contrib-less": "^0.11.4" }' ;
             };
         break;
         
         case 'sass':
             if(this.taskrunner == 'gulp'){
-                contentPackjson += ',"devDependencies": {"gulp-inc": "^0.1.1", "gulp-frontnote": "^0.1.0", "css-sprite": "^0.9.0-beta2", "gulp-ruby-sass": "^0.7.1", "gulp-sass": "^1.2.0", "gulp-sass-graph": "^1.0.0", "gulp-sassdoc": "^1.0.3", "gulp-scss-lint": "^0.1.4"}' ;
+                contentPackjson += ',"devDependencies": {'
+                                +br+'"gulp-inc": "^0.1.1", '
+                                +br+'"gulp-frontnote": "^0.1.0", '
+                                +br+'"css-sprite": "^0.9.0-beta2", '
+                                +br+'"gulp-ruby-sass": "^0.7.1", '
+                                +br+'"gulp-sass": "^1.2.0", '
+                                +br+'"gulp-sass-graph": "^1.0.0", '
+                                +br+'"gulp-sassdoc": "^1.0.3", '
+                                +br+'"gulp-scss-lint": "^0.1.4"}' ;
             }else{
-                contentPackjson += ',"devDependencies": {"grunt-contrib-sass": "^0.8.1", "grunt-contrib-compass": "^1.0.1", "grunt-sass": "^0.16.0", "runt-sass-convert": "^0.2.0", "grunt-sass-directory-import": "^0.1.1"}' ;
+                contentPackjson += ',"devDependencies": {'
+                                +br+'"grunt-contrib-sass": "^0.8.1", '
+                                +br+'"grunt-contrib-compass": "^1.0.1", '
+                                +br+'"grunt-sass": "^0.16.0", '
+                                +br+'"runt-sass-convert": "^0.2.0", '
+                                +br+'"grunt-sass-directory-import": "^0.1.1"}' ;
             };
         break;
         };
     switch (this.taskrunner) { 
         case 'gulp':
-        contentPackjson += ',"devDependencies": {"gulp-cache": "^0.2.4","gulp-cssmin": "^0.1.6","gulp-gzip": "0.0.8","gulp-imagemin": "^1.0.1","gulp-jshint": "^1.8.5","gulp-livereload": "^2.1.1","gulp-notify": "^2.0.0","gulp-rename": "^1.2.0","gulp-ruby-sass": "^0.7.1","gulp-uglify": "^1.0.1","gulp-webp": "^2.0.0" }' ;
+        contentPackjson += ',"devDependencies": {'
+                        +br+'"gulp-cache": "^0.2.4",'
+                        +br+'"gulp-cssmin": "^0.1.6",'
+                        +br+'"gulp-gzip": "0.0.8",'
+                        +br+'"gulp-imagemin": "^1.0.1",'
+                        +br+'"gulp-jshint": "^1.8.5",'
+                        +br+'"gulp-livereload": "^2.1.1",'
+                        +br+'"gulp-notify": "^2.0.0",'
+                        +br+'"gulp-rename": "^1.2.0",'
+                        +br+'"gulp-ruby-sass": "^0.7.1",'
+                        +br+'"gulp-uglify": "^1.0.1",'
+                        +br+'"gulp-webp": "^2.0.0" }' ;
         break;
         case 'grunt':
-        contentPackjson += ',"devDependencies": {\n\n"grunt": "^0.4.5",\n\n"grunt-contrib-compress": "^0.12.0",\n\n"grunt-contrib-concat": "^0.5.0",\n\n"grunt-contrib-connect": "^0.8.0",\n\n"grunt-contrib-copy": "^0.7.0",\n\n"grunt-contrib-cssmin": "^0.10.0",\n\n"grunt-contrib-imagemin": "^0.8.1",\n\n"grunt-contrib-jshint": "^0.10.0",\n\n"grunt-contrib-uglify": "^0.6.0",\n\n"grunt-contrib-watch": "^0.6.1" }' ;
+        contentPackjson += ',"devDependencies": {'
+                        +br+'"grunt": "^0.4.5",'
+                        +br+'"grunt-contrib-compress": "^0.12.0",'
+                        +br+'"grunt-contrib-concat": "^0.5.0",'
+                        +br+'"grunt-contrib-connect": "^0.8.0",'
+                        +br+'"grunt-contrib-copy": "^0.7.0",'
+                        +br+'"grunt-contrib-cssmin": "^0.10.0",'
+                        +br+'"grunt-contrib-imagemin": "^0.8.1",'
+                        +br+'"grunt-contrib-jshint": "^0.10.0",'
+                        +br+'"grunt-contrib-uglify": "^0.6.0",'
+                        +br+'"grunt-contrib-watch": "^0.6.1" }' ;
         break;
         };
     contentPackjson += '}';
-    //var json= JSON.stringify( contentPackjson );
+        
+        
+    //create the package.json
     this.dest.write("package.json", contentPackjson);
+    
+    //create the bower.json
+    this.dest.write("bower.json", contentBowerjson);
+        
+    //create content to index.html
+    var  ChoiceHead = '';
+     
+    if(this.baseProject == "Angular app")
+    { 
+        ChoiceHead += space+space+'<script src="vendors/angular/angular.js"></script>'
+                +br+space+space+'<script src="vendors/angular-animate/angular-animate.js"></script>'
+                +br+space+space+'<script src="vendors/angular-cookies/angular-cookies.js"></script>'
+                +br+space+space+'<script src="vendors/angular-loader/angular-loader.js"></script>'
+                +br+space+space+'<script src="vendors/angular-mocks/angular-mocks.js"></script>'
+                +br+space+space+'<script src="vendors/angular-resource/angular-resource.js"></script>'
+                +br+space+space+'<script src="vendors/angular-route/angular-route.js"></script>'
+                +br+space+space+'<script src="vendors/angular-sanitize/angular-sanitize.js"></script>'
+                +br+space+space+'<script src="vendors/angular-scenario/angular-scenario.js"></script>'
+                +br+space+space+'<script src="vendors/angular-touch/angular-touch.js"></script>'
+                +br+space+space+'<script src="modules.js"></script>'
+                +br+space+space+'<script src="routes.js"></script>';
+    };
+    switch (this.bootstrap)
+    {
+        case 'bootstrap':
+            ChoiceHead += space+space+'<link rel="stylesheet" href="vendors/bootstrap/css/bootstrap.min.css">'
+                        +br+space+space+'<script src="vendors/bootstrap/js/bootstrap.min.js"></script>';
+            
+        break;
+        case 'foundation':
+            ChoiceHead += space+space+'<link rel="stylesheet" href="vendors/foundation/css/foundation.css" />'
+                        +br+space+space+'<link rel="stylesheet" href="vendors/foundation/css/normalize.css" />'
+                        +br+space+space+'<script src="vendors/foundation/js/foundation.js"></script>'
+                        +br+space+space+'<script>'
+                        +br+space+space+space+'$(document).foundation();'
+                        +br+space+space+'</script>';
+        break;
+    };
+        
+    var contentIndexHtmlHead = '<!DOCTYPE html>'
+                            +br+
+                            +br+'<html lang="fr">'
+                            +br+
+                            +br+space+'<head>'
+                            +br+space+space+'<meta charset="UTF-8">'
+                            +br+space+space+'<title>New Project</title>'
+                            +br+space+space+'<meta name="description" content="">'
+                            +br+space+space+'<meta name="keywords" content="">'
+                            +br+space+space+'<meta name="author" content="Cegedim Kadrige">'
+                            +br+ChoiceHead
+                            +br+space+space+'<meta name="viewport" content="width=device-width, initial-scale=1">'
+                            +br+space+space+'<script src="vendors/fastclick/lib/fastclick.js"></script>'
+                            +br+space+space+'<script src="vendors/modernizr/modernizr.js"></script>'
+                            +br+space+space+'<script src="vendors/jquery/jquery.js"></script>'
+                            +br+space+space+'<script src="vendors/jquery-ui/jquery-ui.js"></script>'
+                            +br+space+'</head>'+br;
+    var Header = space+space+'<header>'+br+space+space+'</header>'+br;
+    var Section = space+space+'<section>'+br+space+space+'</section>'+br;
+    var Footer = space+space+'<footer>'+br+space+space+'</footer>'+br;
+    var contentIndexHtmlBody = +br+space+'<body>'
+                            +br+Header
+                            +Section
+                            +Footer
+                            +br+space+'</body>'+br;
+        
+    var contentIndexHtmlEnd = '</html>';
+    
+    //create the file index.html
+    this.dest.write("dev/index.html", (contentIndexHtmlHead+contentIndexHtmlBody+contentIndexHtmlEnd));
 };
