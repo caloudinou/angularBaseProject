@@ -187,7 +187,7 @@ myGenerator.prototype.build = function build() {
     switch (this.bootstrap)
     {
         case 'bootstrap':
-        contentBowerjson += br+'"bootstrap",';
+        contentBowerjson += br+'"bootstrap"';
 
         break;
         case 'foundation':
