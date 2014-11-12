@@ -4,58 +4,6 @@ var path = require('path');
 var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 
-/*
-var myGenerator = yeoman.generators.Base.extend({
-    // Intro message
-    init: function() {
-        console.log("Welcome Here, we will build your app strcture and install dependencies then packages for you!!! Go take a coffe :p");
-    },
-
-    // this will create your app folder structure
-    scaffoldFolders: function() {
-        this.mkdir("dev");
-        this.mkdir("dev/assets");
-        this.mkdir("dev/assets/fonts");
-        this.mkdir("dev/assets/images");
-        this.mkdir("dev/components");
-        this.mkdir("dev/js");
-        this.mkdir("dev/styles");
-        this.mkdir("dev/styles/compiled");
-        this.mkdir("dev/vendors");
-
-        this.mkdir("preprod");
-        this.mkdir("preprod/assets");
-        this.mkdir("preprod/assets/fonts");
-        this.mkdir("preprod/assets/images");
-        this.mkdir("preprod/components");
-        this.mkdir("preprod/js");
-        this.mkdir("preprod/styles");
-        this.mkdir("preprod/vendors");
-
-        this.mkdir("prod");
-
-        this.mkdir("tests");
-        this.mkdir("tests/e2e");
-    },
-
-    copyMainFiles: function() {
-        this.src.copy("_index.html", "dev/index.html");
-        this.src.copy("_modules.js", "dev/modules.js");
-        this.src.copy("_routes.js", "dev/routes.js");
-        this.src.copy("_bower.json", "bower.json");
-        this.src.copy("_bowerrc", ".bowerrc");
-        this.src.copy("_package.json", "package.json");
-        this.src.copy("_gulpfile.js", "gulpfile.js");
-    },
-
-    // install dependencies and required packages
-    install: function() {
-        this.installDependencies();
-    },
-});
-
-module.exports = myGenerator;
-*/
 
 /* --- New Generator based on Starter Angular or Static Website --- */
 var myGenerator = module.exports = function myGenerator(args, options, config) {
@@ -74,34 +22,34 @@ myGenerator.prototype.askFor = function askFor() {
     console.log(this.yeoman);
 
     var prompts = [
-    {
-        type: 'list',
-        name: 'baseProject',
-        message: 'What kind of project would like to start with?',
-        choices: ['Static website', 'Angular app'],
-        default: 'angularApp'
-    },
-    {
-        type :'list',
-        name: 'bootstrap',
-        message: 'bootstrap or foundation?',
-        choices: ['bootstrap', 'foundation'],
-        default: 'foundation'
-    },
-    {
-        type :'list',
-        name: 'preprocessor',
-        message: 'Which css preprocessors do you prefer?',
-        choices: ['less', 'sass'],
-        default: 'sass'
-    },
-    {
-        type :'list',
-        name: 'taskrunner',
-        message: 'Taskrunner will help you to automate lots of things, choose one that suits your needs!!!',
-        choices: ['grunt', 'gulp'],
-        default: 'gulp'
-    },
+        {
+            type: 'list',
+            name: 'baseProject',
+            message: 'What kind of project would like to start with?',
+            choices: ['Static website', 'Angular app'],
+            default: 'angularApp'
+        },
+        {
+            type :'list',
+            name: 'bootstrap',
+            message: 'bootstrap or foundation?',
+            choices: ['bootstrap', 'foundation'],
+            default: 'foundation'
+        },
+        {
+            type :'list',
+            name: 'preprocessor',
+            message: 'Which css preprocessors do you prefer?',
+            choices: ['less', 'sass'],
+            default: 'sass'
+        },
+        {
+            type :'list',
+            name: 'taskrunner',
+            message: 'Taskrunner will help you to automate lots of things, choose one that suits your needs?',
+            choices: ['grunt', 'gulp'],
+            default: 'gulp'
+        }
     ];
 
     this.prompt(prompts, function(props) {
@@ -116,15 +64,6 @@ myGenerator.prototype.askFor = function askFor() {
 // build the project folder structure depending on the user choice
 //choice site static
 myGenerator.prototype.build = function build() {
-    this.mkdir("dev");
-    this.mkdir("dev/assets");
-    this.mkdir("dev/assets/fonts");
-    this.mkdir("dev/assets/images");
-    this.mkdir("dev/js");
-    this.mkdir("dev/styles");
-    this.mkdir("dev/styles/compiled");
-    this.mkdir("dev/vendors");
-    this.mkdir("prod");
         
     //definition to the end line & the space
     var br = '\n';
@@ -239,29 +178,32 @@ myGenerator.prototype.build = function build() {
                     +br+'}';  
     
 //choice site angular
-    if(this.baseProject == "Angular app") {
-        this.mkdir("dev/components");
-
-        this.mkdir("preprod");
-        this.mkdir("preprod/assets");
-        this.mkdir("preprod/assets/fonts");
-        this.mkdir("preprod/assets/images");
-        this.mkdir("preprod/components");
-        this.mkdir("preprod/js");
-        this.mkdir("preprod/styles");
-        this.mkdir("preprod/vendors");
-
-        this.mkdir("tests");
-        this.mkdir("tests/e2e");
-
-        //this.src.copy("_index.html", "dev/index.html");
-        this.src.copy("_modules.js", "dev/modules.js");
-        this.src.copy("_routes.js", "dev/routes.js");
-        //this.src.copy("_bower.json", "bower.json");
-        this.src.copy("_bowerrc", ".bowerrc");
-        //this.src.copy("_package.json", "package.json");
-        this.src.copy("_gulpfile.js", "gulpfile.js");
+    switch (this.baseProject)
+    {
+        case 'Static website':
+            var choice = 'Website';
+            this.mkdir("dev"+choice);
+        break;
+        case 'Angular app':
+            var choice = 'App';
+            this.mkdir("dev"+choice);
+            this.mkdir("dev"+choice+"/views/");
+            this.src.copy("_modules.js", "dev"+choice+"/modules.js");
+            this.src.copy("_routes.js", "dev"+choice+"/routes.js");
+        break;
     }
+            this.mkdir("dev"+choice+"/fonts");
+            this.mkdir("dev"+choice+"/images");
+            this.mkdir("dev"+choice+"/js");
+            this.mkdir("dev"+choice+"/styles");
+            this.mkdir("dev"+choice+"/vendors");
+            this.mkdir("prod"+choice);
+            this.dest.write("dev"+choice+"/styles/main.scss", "*{margin:0;padding:0;}html,body{width:100%;height:100%;font-size:100%;}");
+            this.dest.write("dev"+choice+"/styles/main.css", "*{margin:0;padding:0;}html,body{width:100%;height:100%;font-size:100%;}");
+            //this.src.copy("_bowerrc", ".bowerrc");
+            this.mkdir("tests");
+            this.mkdir("tests/e2e");
+    
     //incrementing the content according to the choice dependencies
     switch (this.preprocessor) { 
         case 'less':
@@ -305,6 +247,9 @@ myGenerator.prototype.build = function build() {
         };
     switch (this.taskrunner) { 
         case 'gulp':
+            
+        this.src.copy("_gulpfile.js", "gulpfile.js");
+            
         contentPackjson += ',"devDependencies": {'
                         +br+'"gulp-cache": "^0.2.4",'
                         +br+'"gulp-cssmin": "^0.1.6",'
@@ -340,6 +285,22 @@ myGenerator.prototype.build = function build() {
     
     //create the bower.json
     this.dest.write("bower.json", contentBowerjson);
+    //create the bower.json
+    this.dest.write(".bowerrc", ('{'+br+'"directory" : "dev'+choice+'/vendors"'+br+'}'));
+    //modif the _bowerrc
+   /* this.rewriteFile({
+      file: ".bowerrc",
+      needle: '<!-- test -->',
+      splicable: [
+        '<test' + choice + '.test"></test>'
+      ]
+    });*/
+    //this.domUpdate('.bowerrc', 'test', 'content','r+');
+    //var html =''; 
+   // var tagName =''; 
+   // var content =''; 
+    //var mode ='';
+   // this.domUpdate(html, tagName, content, mode)
         
     //create content to index.html
     var  ChoiceHead = '';
@@ -377,15 +338,16 @@ myGenerator.prototype.build = function build() {
     };
         
     var contentIndexHtmlHead = '<!DOCTYPE html>'
-                            +br+
+                            +br
                             +br+'<html lang="fr">'
-                            +br+
+                            +br
                             +br+space+'<head>'
                             +br+space+space+'<meta charset="UTF-8">'
                             +br+space+space+'<title>New Project</title>'
                             +br+space+space+'<meta name="description" content="">'
                             +br+space+space+'<meta name="keywords" content="">'
                             +br+space+space+'<meta name="author" content="Cegedim Kadrige">'
+                            +br+space+space+'<link rel=icon href=favicon.ico sizes="32x32" type="image/png">'
                             +br+ChoiceHead
                             +br+space+space+'<meta name="viewport" content="width=device-width, initial-scale=1">'
                             +br+space+space+'<script src="vendors/fastclick/lib/fastclick.js"></script>'
@@ -396,14 +358,28 @@ myGenerator.prototype.build = function build() {
     var Header = space+space+'<header>'+br+space+space+'</header>'+br;
     var Section = space+space+'<section>'+br+space+space+'</section>'+br;
     var Footer = space+space+'<footer>'+br+space+space+'</footer>'+br;
-    var contentIndexHtmlBody = +br+space+'<body>'
+    var contentIndexHtmlBody = br+space+'<body>'
                             +br+Header
                             +Section
                             +Footer
                             +br+space+'</body>'+br;
+    var content404HtmlBody = br+space+'<body>'
+                            +br+Header
+                            +br+space+space+'<section>'+br+space+space+'<img src="images/mq1.jpg" alt="logo Kadrige" />'
+                            +br+space+space+'<h1>Not found <span>:(</span></h1>'
+                            +br+space+space+'<p>Sorry, but the page you were trying to view does not exist.</p>'
+                            +br+space+space+'</section>';
         
     var contentIndexHtmlEnd = '</html>';
     
     //create the file index.html
-    this.dest.write("dev/index.html", (contentIndexHtmlHead+contentIndexHtmlBody+contentIndexHtmlEnd));
+    this.dest.write("dev"+choice+"/index.html", (contentIndexHtmlHead+contentIndexHtmlBody+contentIndexHtmlEnd));
+    //create the file 404.html
+    this.dest.write("dev"+choice+"/404.html", (contentIndexHtmlHead+content404HtmlBody+contentIndexHtmlEnd));
+    //create the file robots.txt
+    this.dest.write("dev"+choice+"/robots.txt", ('# robotstxt.org'+br+'User-agent: *'));
+    //create the file .htaccess
+    this.src.copy("_htaccess", "dev"+choice+"/.htaccess");
+    //create the file config.js
+    this.dest.write("/etc/webAppKadrige/config.js", ('var devPreUrl = ;'+br+'var devToken = ;'+br+'var testPreUrl = ;'+br+'var testToken = ;'+br+'var prodPreUrl = ;'+br+'var prodToken = ;'));
 };
